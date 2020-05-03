@@ -65,12 +65,8 @@ public class Maze {
         return new Maze(description.trim().split("\\s+"));
     }
 
-    public static Maze fromFile(final String filename) {
-        try {
-            return Maze.fromScanner(new Scanner(new File(filename)));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
+    public static Maze fromFile(final String filename) throws FileNotFoundException {
+        return Maze.fromScanner(new Scanner(new File(filename)));
     }
 
     public static Maze fromScanner(final Scanner scanner) {
@@ -91,42 +87,31 @@ public class Maze {
         }
 
         boolean isInMaze() {
-            return row >= 0 && row < getWidth() && column >= 0 && column < getHeight();
-            // TODO: Fill this in. Return whether the row and column is a legal
-            // position in this maze.
+            return row >= 0 && row < getHeight() && column >= 0 && column < getWidth();
         }
 
         boolean canBeMovedTo() {
-            return isInMaze() && cells[row][column] == Cell.OPEN;
-            // TODO: Fill this in. You can move to a space only if it is inside the
-            // maze and the cell is open or contains the cheese.
+            return isInMaze() && (contents().equals(Cell.OPEN) || contents().equals(Cell.CHEESE));
         }
 
         boolean hasCheese() {
-            return isInMaze() && cells[row][column] == Cell.CHEESE;
-            // TODO: Fill this in. Returns whether the cell has the cheese. You can
-            // use the contents() method to help you here.
+            return isInMaze() && contents().equals(Cell.CHEESE);
         }
 
         Location above() {
-            return new Location(row, column - 1);
-            // TODO: Fill this in. It should return a new location whose coordinates
-            // are (1) the row above this location's row, and (2) the same column.
+            return new Location(row - 1, column);
         }
 
         Location below() {
-            return new Location(row, column + 1);
-            // TODO: Fill this in. Return the location directly below this one.
+            return new Location(row + 1, column);
         }
 
         Location toTheLeft() {
-            return new Location(row - 1, column);
-            // TODO: Fill this in. Return the location directly to the left of this one.
+            return new Location(row, column - 1);
         }
 
         Location toTheRight() {
-            return new Location(row + 1, column);
-            // TODO: Fill this in. Return the location directly to the right of this one.
+            return new Location(row, column + 1);
         }
 
         void place(Cell cell) {
@@ -154,9 +139,6 @@ public class Maze {
         public String toString() {
             return Character.toString(display);
         }
-
-        // This needs a constructor and a toString method. You might need to do some
-        // research on Java enums.
     }
 
     public interface MazeListener {
@@ -164,24 +146,19 @@ public class Maze {
     }
 
     public int getWidth() {
-        return getWidth();
-        // TODO: Fill this in. The information comes from the cells array.
+        return cells[0].length;
     }
 
     public int getHeight() {
-        return getHeight();
-        // TODO: Fill this in
+        return cells.length;
     }
 
     public Location getInitialRatPosition() {
-        return getInitialRatPosition();
-        // TODO: Fill this in. It is a typical getter, since you already have a field
-        // for the initial rat position.
+        return initialRatLocation;
     }
 
     public Location getInitialCheesePosition() {
-        return getInitialCheesePosition();
-        // TODO: Fill this in
+        return initialCheeseLocation;
     }
 
     public String toString() {
