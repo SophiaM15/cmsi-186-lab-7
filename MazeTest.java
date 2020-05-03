@@ -25,10 +25,6 @@ public class MazeTest extends TestSuite {
                 () -> Maze.fromString("row\noww"),
                 IllegalArgumentException.class, "Maze has no cheese"
             )),
-            new Test("Empty maze can be detected", () -> expectThrows(
-                () -> Maze.fromFile("emptymaze"),
-                IllegalArgumentException.class, "Maze has no rows"
-            )),
             new Test("Location contents", () -> {
                 var maze = Maze.fromString("wwor\ncooo");
                 expectEqual(maze.new Location(0, 2).contents(), Maze.Cell.OPEN);
@@ -110,4 +106,3 @@ public class MazeTest extends TestSuite {
         };
     }
 }
-
